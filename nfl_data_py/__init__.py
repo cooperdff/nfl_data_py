@@ -764,16 +764,17 @@ def import_ids(columns=None, ids=None):
     
     rem_cols = [x for x in df.columns if x not in avail_ids]
     tgt_ids = [x + '_id' for x in ids]
-        
+    
+    ret_columns = set(rem_cols + tgt_ids)    
     # filter df to just specified columns
     if len(columns) > 0 and len(ids) > 0:
-        df = df[set(tgt_ids + columns)]
+        ret_columns = set(tgt_ids + columns)
     elif len(columns) > 0 and len(ids) == 0:
-        df = df[set(avail_ids + columns)]
+        ret_columns = set(avail_ids + columns)
     elif len(columns) == 0 and len(ids) > 0:
-        df = df[set(tgt_ids + rem_cols)]
+        ret_columns = set(tgt_ids + rem_cols)
     
-    return df
+    return df[list(ret_columns)]
     
 
 def import_contracts():
